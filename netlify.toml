@@ -1,0 +1,18 @@
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Permite Web Share API y descarga de archivos
+    Permissions-Policy = "web-share=(*)"
+    # Seguridad básica
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    # Evita que el navegador cachee versiones antiguas
+    Cache-Control = "no-cache, no-store, must-revalidate"
