@@ -267,6 +267,38 @@ textarea{resize:vertical;min-height:72px;}
 
 /* ══ CONFIG ══ */
 .ratios-info{font-size:0.8rem;color:var(--ink3);line-height:1.65;margin-bottom:1rem;}
+/* ══ BUFFET PLANNER ══ */
+.bf-tabs{display:flex;gap:0.5rem;margin-bottom:1.4rem;flex-wrap:wrap;}
+.bf-tab{background:var(--card);border:1.5px solid var(--border);color:var(--ink2);padding:0.55rem 1.2rem;border-radius:9px;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;transition:all 0.15s;}
+.bf-tab:hover{border-color:var(--blue);color:var(--white);}
+.bf-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.bf-grid-wrap{overflow-x:auto;}
+.bf-grid{border-collapse:separate;border-spacing:10px;}
+.bf-grid td{padding:0;vertical-align:top;}
+.bf-col-title{background:var(--bg3);border:1.5px solid var(--border2);color:var(--ink);border-radius:9px;padding:0.5rem 0.7rem;font-size:0.8rem;font-weight:600;text-align:center;width:100%;font-family:'Space Grotesk',sans-serif;}
+.bf-col-title:focus{border-color:var(--blue2);background:var(--bg2);outline:none;}
+.bf-col-title::placeholder{color:var(--ink3);font-weight:400;}
+.bf-cell{background:var(--card);border:1.5px solid var(--border);border-radius:13px;overflow:hidden;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow);position:relative;min-width:180px;min-height:150px;display:flex;flex-direction:column;}
+.bf-cell:hover{border-color:var(--blue);box-shadow:0 6px 30px rgba(25,118,210,0.2);transform:translateY(-2px);}
+.bf-cell-top{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 100%);padding:0.85rem 0.95rem 0.6rem;position:relative;border-bottom:1px solid var(--border);}
+.bf-cell-top::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--blue3),transparent);}
+.bf-cell-top h4{font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:600;color:var(--white);margin-bottom:0.2rem;line-height:1.2;padding-right:1.4rem;}
+.bf-cell-top p{font-size:0.65rem;color:var(--ink3);}
+.bf-cell-body{padding:0.7rem 0.95rem;flex:1;}
+.bf-cell-prices{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;}
+.bf-cp{text-align:center;padding:0.4rem;border-radius:7px;background:var(--bg3);}
+.bf-cp .l{font-size:0.56rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink3);}
+.bf-cp .v{font-size:0.8rem;font-weight:700;color:var(--ink);}
+.bf-cell-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem;color:var(--ink3);font-size:0.78rem;padding:1.4rem 0.9rem;}
+.bf-cell-empty span{font-size:1.4rem;opacity:0.4;}
+.bf-cell-remove{position:absolute;top:0.5rem;right:0.5rem;width:22px;height:22px;border-radius:50%;background:rgba(198,40,40,0.15);border:1px solid rgba(198,40,40,0.4);color:#EF9A9A;font-size:0.7rem;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;}
+.bf-cell-remove:hover{background:var(--red);color:#fff;border-color:var(--red);}
+.bf-semaforo{display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.9rem;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.bf-sem-ok{background:rgba(67,160,71,0.15);border:1px solid rgba(67,160,71,0.4);color:#81C784;}
+.bf-sem-bad{background:rgba(198,40,40,0.15);border:1px solid rgba(198,40,40,0.4);color:#EF9A9A;}
+.bf-bev-input{width:100%;background:var(--bg2);border:1px solid var(--border2);color:var(--ink);border-radius:6px;padding:0.4rem 0.5rem;font-size:0.78rem;}
+.bf-bev-del{background:rgba(198,40,40,0.15);border:1px solid rgba(198,40,40,0.4);color:#EF9A9A;border-radius:6px;padding:0.35rem 0.6rem;cursor:pointer;font-size:0.75rem;}
+.bf-bev-del:hover{background:var(--red);color:#fff;}
 
 @media(max-width:720px){
   .bcg-grid,.fd-totals{grid-template-columns:1fr 1fr;}
@@ -364,6 +396,7 @@ textarea{resize:vertical;min-height:72px;}
     <button class="nav-btn active" onclick="showSec('fichas')">📋 Fichas</button>
     <button class="nav-btn" onclick="showSec('nueva')">✚ Nueva</button>
     <button class="nav-btn" onclick="showSec('menu-eng')">📊 Menú Eng.</button>
+    <button class="nav-btn" onclick="showSec('buffet')">🍽 Buffet</button>
     <button class="nav-btn" onclick="showSec('ingredientes')">🧅 Ingredientes</button>
     <button class="nav-btn" onclick="showSec('config')">⚙ Config</button>
   </div>
@@ -403,6 +436,7 @@ textarea{resize:vertical;min-height:72px;}
     <button class="btn btn-blue" onclick="showSec('nueva')">✚ Nueva Ficha</button>
   </div>
   <div class="search-wrap"><input type="text" id="search-fichas" placeholder="Buscar plato..." oninput="renderFichas()"></div>
+  <div class="bf-tabs" id="carpetas-tabs" style="margin-bottom:1rem;"></div>
   <div id="fichas-grid" class="fichas-grid"></div>
 </div>
 
@@ -428,6 +462,9 @@ textarea{resize:vertical;min-height:72px;}
       <div class="fg"><label>Nº Raciones</label><input type="number" id="p-raciones" value="10" min="1" oninput="recalc()"></div>
       <div class="fg"><label>Categoría</label>
         <select id="p-cat"><option>Entrante</option><option>Primer plato</option><option>Segundo plato</option><option>Postre</option><option>Bebida</option><option>Otro</option></select>
+      </div>
+      <div class="fg"><label>Carpeta</label>
+        <select id="p-carpeta" onchange="onCarpetaSelectChange(this.value)"></select>
       </div>
       <div class="fg"><label>Margen</label>
         <select id="p-margen" onchange="recalc()">
@@ -611,6 +648,62 @@ textarea{resize:vertical;min-height:72px;}
   </div>
 </div>
 
+<!-- BUFFET PLANNER -->
+<div id="sec-buffet" class="section">
+  <div class="ph">
+    <div class="ph-left"><h1>Planificador de Buffet</h1><p>Encaja tu carta de buffet dentro del presupuesto por cliente</p></div>
+  </div>
+
+  <div class="bf-tabs" id="bf-tabs"></div>
+
+  <div class="card">
+    <div class="card-ttl">⚙ Configuración del servicio</div>
+    <div class="fgrid">
+      <div class="fg"><label>Presupuesto / cliente (€)</label><input type="number" id="bf-presupuesto" step="0.01" min="0" oninput="calcBuffet()"></div>
+      <div class="fg"><label>Nº platos que coge de media el cliente</label><input type="number" id="bf-platos-media" step="0.1" min="0.1" oninput="calcBuffet()"></div>
+      <div class="fg"><label>Margen stock de seguridad (%)</label><input type="number" id="bf-margen" step="1" min="0" max="90" oninput="calcBuffet()"></div>
+      <div class="fg"><label>Nº comensales (pax) previstos</label><input type="number" id="bf-pax" step="1" min="0" oninput="calcBuffet();renderBebidas();"></div>
+    </div>
+    <div class="btn-row"><button class="btn btn-blue" onclick="guardarBuffetConfig()">💾 Guardar configuración del servicio</button></div>
+  </div>
+
+  <div class="card">
+    <div class="card-ttl">🔲 Cuadrícula de Platos</div>
+    <p class="ratios-info">Elige el tamaño de la cuadrícula, ponle un título a cada columna (ej: Lunes, Martes...) y selecciona una ficha técnica ya creada en cada casilla.</p>
+    <div class="fgrid" style="max-width:420px;">
+      <div class="fg"><label>Filas</label><input type="number" id="bf-filas" min="1" max="12" value="3"></div>
+      <div class="fg"><label>Columnas</label><input type="number" id="bf-columnas" min="1" max="12" value="4"></div>
+    </div>
+    <div class="btn-row" style="margin-bottom:1.2rem;"><button class="btn btn-outline" onclick="generarGridBuffet()">🔲 Generar cuadrícula</button></div>
+    <div class="bf-grid-wrap">
+      <table class="bf-grid" id="bf-grid-tbl"></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ttl">💰 Resultado</div>
+    <div class="res-grid" id="buffet-resultado"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-ttl">🍷 Bebidas (opcional, para eventos)</div>
+    <p class="ratios-info">Cálculo aparte del buffet. Por defecto, 1 botella cubre a 4 personas — puedes ajustarlo por bebida si hace falta.</p>
+    <div id="bf-bebidas-tbl-wrap" style="overflow-x:auto;margin-bottom:0.9rem;">
+      <table class="tbl" id="bf-bebidas-tbl"></table>
+    </div>
+    <div class="btn-row" style="margin-bottom:1rem;"><button class="btn btn-outline" onclick="addBebida()">➕ Añadir bebida</button></div>
+    <div class="res-grid" id="bf-bebidas-resultado"></div>
+  </div>
+
+  <div class="btn-row" style="flex-wrap:wrap;">
+    <button class="btn btn-dark" onclick="exportarBackup()">💻 Guardar en este dispositivo</button>
+    <button class="btn btn-dark" onclick="guardarEnDrive()">☁ Guardar en Google Drive</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('import-backup-input').click()">📁 Cargar backup</button>
+    <button class="btn btn-ghost" onclick="cargarDesdeDrive()">📂 Cargar desde Drive</button>
+    <button class="btn btn-blue" onclick="exportarBuffetPDF()">🖨 Exportar / Imprimir PDF</button>
+  </div>
+</div>
+
 </div><!-- /wrap -->
 
 <!-- MODAL SELECTOR FICHAS (estilo Drive) -->
@@ -631,6 +724,7 @@ textarea{resize:vertical;min-height:72px;}
         <button class="btn btn-ghost btn-sm" onclick="meSelToggleAll(false)">☐ Ninguna</button>
         <span id="me-sel-badge" style="font-size:0.75rem;color:var(--blue3);font-weight:600;white-space:nowrap;"></span>
       </div>
+      <div class="bf-tabs" id="me-sel-carpetas" style="margin-top:0.7rem;margin-bottom:0;"></div>
     </div>
     <!-- Grid de tarjetas -->
     <div id="me-sel-grid" style="overflow-y:auto;padding:1.25rem 1.75rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.85rem;flex:1;"></div>
@@ -638,6 +732,27 @@ textarea{resize:vertical;min-height:72px;}
     <div style="padding:1rem 1.75rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:0.6rem;flex-shrink:0;">
       <button class="btn btn-ghost" onclick="closeMeSelector()">Cancelar</button>
       <button class="btn btn-blue" onclick="confirmMeSelector()">✔ Confirmar selección</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SELECTOR FICHA — BUFFET (una sola ficha por casilla) -->
+<div class="modal-bg" id="modal-bf-sel" onclick="if(event.target===this)closeBfSelector()">
+  <div style="background:var(--card);border:1px solid var(--border2);border-radius:18px;width:min(860px,96vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 16px 60px rgba(0,0,0,0.7);">
+    <div style="padding:1.4rem 1.75rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.85rem;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--white);">🍽 Elegir ficha para esta casilla</div>
+        <button class="btn btn-ghost btn-sm" onclick="closeBfSelector()">✕</button>
+      </div>
+      <div style="position:relative;">
+        <input type="text" id="bf-sel-search" placeholder="Buscar ficha..." oninput="renderBfSelector()" style="padding-left:2rem;">
+        <span style="position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);color:var(--ink3);pointer-events:none;">⌕</span>
+      </div>
+      <div class="bf-tabs" id="bf-sel-carpetas" style="margin-top:0.7rem;margin-bottom:0;"></div>
+    </div>
+    <div id="bf-sel-grid" style="overflow-y:auto;padding:1.25rem 1.75rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.85rem;flex:1;"></div>
+    <div style="padding:1rem 1.75rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:0.6rem;flex-shrink:0;">
+      <button class="btn btn-ghost" onclick="closeBfSelector()">Cancelar</button>
     </div>
   </div>
 </div>
@@ -774,8 +889,8 @@ function resetRatios(){
 const fmt=n=>(isNaN(n)?0:n).toFixed(2)+'€';
 const esc=s=>String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
-let app={fichas:[],ingredientes:JSON.parse(JSON.stringify(DB)),editId:null,editIngIdx:null};
-try{const s=localStorage.getItem('costflow_v1');if(s){const p=JSON.parse(s);app.fichas=p.fichas||[];if(p.ingredientes?.length)app.ingredientes=p.ingredientes;}}catch(e){}
+let app={fichas:[],ingredientes:JSON.parse(JSON.stringify(DB)),editId:null,editIngIdx:null,buffet:null,carpetas:['Restaurante','Buffet','Evento','Catering']};
+try{const s=localStorage.getItem('costflow_v1');if(s){const p=JSON.parse(s);app.fichas=p.fichas||[];if(p.ingredientes?.length)app.ingredientes=p.ingredientes;if(p.buffet)app.buffet=p.buffet;if(p.carpetas&&p.carpetas.length)app.carpetas=p.carpetas;}}catch(e){}
 const save=()=>{try{localStorage.setItem('costflow_v1',JSON.stringify(app));}catch(e){}};
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
 
@@ -833,7 +948,9 @@ async function guardarEnDrive(){
       fichas:app.fichas||[],
       ingredientes:app.ingredientes||[],
       ratios:RATIOS||[],
-      recargo:RECARGO_GLOBAL||{}
+      recargo:RECARGO_GLOBAL||{},
+      buffet:app.buffet||{},
+      carpetas:app.carpetas||[]
     };
     const json=JSON.stringify(backup,null,2);
     const fechaStr=new Date().toLocaleDateString('es-ES').replace(/\//g,'-');
@@ -950,7 +1067,9 @@ async function exportarBackup(){
       fichas:app.fichas||[],
       ingredientes:app.ingredientes||[],
       ratios:RATIOS||[],
-      recargo:RECARGO_GLOBAL||{}
+      recargo:RECARGO_GLOBAL||{},
+      buffet:app.buffet||{},
+      carpetas:app.carpetas||[]
     };
     const json=JSON.stringify(backup,null,2);
     const fechaStr=new Date().toLocaleDateString('es-ES').replace(/\//g,'-');
@@ -1011,6 +1130,8 @@ function procesarDatosBackup(data){
       app.ingredientes=data.ingredientes||[];
       if(data.ratios&&data.ratios.length){RATIOS=data.ratios;localStorage.setItem('costflow_ratios',JSON.stringify(RATIOS));}
       if(data.recargo){RECARGO_GLOBAL=data.recargo;localStorage.setItem('costflow_recargo',JSON.stringify(RECARGO_GLOBAL));}
+      if(data.buffet&&Object.keys(data.buffet).length){app.buffet=data.buffet;}
+      if(data.carpetas&&data.carpetas.length){app.carpetas=data.carpetas;}
       save();modal.remove();showSec('fichas');
       toast('✅ '+app.fichas.length+' fichas restauradas');
     }catch(err){modal.remove();toast('❌ Error: '+err.message);}
@@ -1031,13 +1152,14 @@ function showSec(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('sec-'+id).classList.add('active');
-  const map={fichas:0,nueva:1,'menu-eng':2,ingredientes:3,config:4};
+  const map={fichas:0,nueva:1,'menu-eng':2,buffet:3,ingredientes:4,config:5};
   document.querySelectorAll('.nav-btn')[map[id]]?.classList.add('active');
   if(id==='fichas')renderFichas();
   if(id==='ingredientes')renderIng();
   if(id==='menu-eng')renderME();
   if(id==='nueva'&&!app.editId){limpiar();document.getElementById('form-ttl').textContent='Nueva Ficha Técnica';}
   if(id==='config'){renderRatiosTbl();renderRecargoCfg();}
+  if(id==='buffet')initBuffet();
 }
 
 let rows=[],rowId=0;
@@ -1046,6 +1168,7 @@ function limpiar(){
   document.getElementById('p-raciones').value=10;
   document.getElementById('p-margen').value='auto';
   document.getElementById('p-fecha').value=new Date().toISOString().split('T')[0];
+  renderCarpetasSelectField('');
   setAlergFromString('');
   rows=[];app.editId=null;renderRows();addRow();recalc();
 }
@@ -1202,6 +1325,7 @@ function guardar(){
   const recargo2=(ratio.recargo||0)/100;
   const pvR=cmpR*ratio.mult*(1+recargo2);
   const f={id:app.editId||Date.now(),nombre,rac,cat:document.getElementById('p-cat').value,
+    carpeta:document.getElementById('p-carpeta').value||'Sin carpeta',
     fecha:document.getElementById('p-fecha').value,elab:document.getElementById('p-elab').value,
     alerg:document.getElementById('p-alerg').value,ings:JSON.parse(JSON.stringify(rows)),
     cmpt,cmpR,pct:ratio.pct,mult:ratio.mult,pvR,pvIva:pvR*1.1,mb:pvR-cmpR};
@@ -1209,14 +1333,81 @@ function guardar(){
   else app.fichas.push(f);
   save();app.editId=null;toast('✅ Ficha guardada');showSec('fichas');
 }
+let carpetaActivaFichas='todas';
+function getCarpetas(){
+  if(!app.carpetas)app.carpetas=[];
+  const usadas=app.fichas.map(f=>f.carpeta).filter(c=>c&&c!=='Sin carpeta');
+  const set=new Set([...app.carpetas,...usadas]);
+  return Array.from(set).sort((a,b)=>a.localeCompare(b,'es'));
+}
+function crearCarpeta(nombreSugerido,onCreated,onCancel){
+  cfPrompt('Nombre de la nueva carpeta (ej: Restaurante, Buffet, Evento...)',nombreSugerido||'',(nombre)=>{
+    nombre=(nombre||'').trim();
+    if(!nombre){toast('⚠ Escribe un nombre para la carpeta');if(onCancel)onCancel();return;}
+    if(!app.carpetas)app.carpetas=[];
+    if(!app.carpetas.some(c=>c.toLowerCase()===nombre.toLowerCase())){app.carpetas.push(nombre);}
+    save();
+    toast('✅ Carpeta "'+nombre+'" creada');
+    if(onCreated)onCreated(nombre);
+  },onCancel);
+}
+function eliminarCarpeta(nombre){
+  const nFichas=app.fichas.filter(f=>f.carpeta===nombre).length;
+  const msg=nFichas>0
+    ?`¿Eliminar la carpeta "${nombre}"? ${nFichas} ficha(s) pasarán a "Sin carpeta".`
+    :`¿Eliminar la carpeta "${nombre}"?`;
+  cfConfirm(msg,()=>{
+    app.carpetas=(app.carpetas||[]).filter(c=>c!==nombre);
+    app.fichas.forEach(f=>{if(f.carpeta===nombre)f.carpeta='Sin carpeta';});
+    if(carpetaActivaFichas===nombre)carpetaActivaFichas='todas';
+    save();
+    renderFichas();
+    toast('🗑 Carpeta eliminada');
+  });
+}
+function renderCarpetasSelectField(valorActual){
+  const sel=document.getElementById('p-carpeta');
+  if(!sel)return;
+  const carpetas=getCarpetas();
+  sel.innerHTML='<option value="">Sin carpeta</option>'
+    +carpetas.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')
+    +'<option value="__nueva__">＋ Crear nueva carpeta...</option>';
+  const val=valorActual&&carpetas.includes(valorActual)?valorActual:'';
+  sel.value=val;
+  sel.dataset.prev=val;
+}
+function onCarpetaSelectChange(val){
+  const sel=document.getElementById('p-carpeta');
+  if(val==='__nueva__'){
+    const prev=sel.dataset.prev||'';
+    crearCarpeta('',(nombre)=>{renderCarpetasSelectField(nombre);},()=>{sel.value=prev;});
+  }else{
+    sel.dataset.prev=val;
+  }
+}
+function renderCarpetasTabsFichas(){
+  const wrap=document.getElementById('carpetas-tabs');
+  if(!wrap)return;
+  const carpetas=getCarpetas();
+  const tabs=['todas',...carpetas,'Sin carpeta'];
+  wrap.innerHTML=tabs.map(c=>{
+    const activo=carpetaActivaFichas===c;
+    const delBtn=(c!=='todas'&&c!=='Sin carpeta')?`<span onclick="event.stopPropagation();eliminarCarpeta('${esc(c).replace(/'/g,"\\'")}')" style="margin-left:0.4rem;opacity:0.6;">✕</span>`:'';
+    return`<button class="bf-tab${activo?' active':''}" onclick="setCarpetaFichas('${esc(c).replace(/'/g,"\\'")}')">${c==='todas'?'📂 Todas':'📁 '+c}${delBtn}</button>`;
+  }).join('')
+  +`<button class="bf-tab" onclick="crearCarpeta('',(n)=>{setCarpetaFichas(n)})" style="border-style:dashed;">＋ Nueva carpeta</button>`;
+}
+function setCarpetaFichas(c){carpetaActivaFichas=c;renderFichas();}
 function renderFichas(){
+  renderCarpetasTabsFichas();
   const q=document.getElementById('search-fichas')?.value?.toLowerCase()||'';
-  const list=app.fichas.filter(f=>f.nombre.toLowerCase().includes(q));
+  let list=app.fichas.filter(f=>f.nombre.toLowerCase().includes(q));
+  if(carpetaActivaFichas!=='todas')list=list.filter(f=>(f.carpeta||'Sin carpeta')===carpetaActivaFichas);
   const g=document.getElementById('fichas-grid');
   if(!list.length){g.innerHTML='<div class="empty"><div class="empty-icon">📋</div><p>Sin fichas aún. ¡Crea la primera!</p></div>';return;}
   g.innerHTML=list.map(f=>`
     <div class="fcard" onclick="verFicha(${f.id})">
-      <div class="fcard-top"><h3>${f.nombre}</h3><p>${f.cat} · ${f.rac} raciones · ${f.fecha||''}</p></div>
+      <div class="fcard-top"><h3>${f.nombre}</h3><p>${f.cat} · ${f.rac} raciones · ${f.fecha||''} · 📁 ${f.carpeta||'Sin carpeta'}</p></div>
       <div class="fcard-body">
         <div class="fcard-prices">
           <div class="fcp"><div class="fcp-l">CMP/rac</div><div class="fcp-v">${fmt(f.cmpR)}</div></div>
@@ -1225,6 +1416,7 @@ function renderFichas(){
         </div>
         <div class="fcard-actions" onclick="event.stopPropagation()">
           <button class="btn btn-outline btn-sm" onclick="verFicha(${f.id})">👁 Ver</button>
+          <button class="btn btn-ghost btn-sm" onclick="abrirSelectorCarpetaFicha(${f.id})" title="Mover a carpeta">📁</button>
           <button class="btn btn-ghost btn-sm" onclick="editFicha(${f.id})">✏ Editar</button>
           <button class="btn btn-red btn-sm" onclick="delFicha(${f.id})">🗑</button>
         </div>
@@ -1270,6 +1462,7 @@ function verFicha(id){
         <div class="fd-meta">
           <div class="fd-meta-item">🍽 <strong>${f.rac}</strong> raciones</div>
           <div class="fd-meta-item">📂 <strong>${f.cat}</strong></div>
+          <div class="fd-meta-item">📁 <strong>${f.carpeta||'Sin carpeta'}</strong></div>
           <div class="fd-meta-item">📅 <strong>${f.fecha||'—'}</strong></div>
         </div>
       </div>
@@ -1310,6 +1503,7 @@ function verFicha(id){
     </div>
     <div class="btn-row no-print" style="margin-top:1.25rem;justify-content:center;">
       <button class="btn btn-blue" onclick="abrirFichaImprimible()">🖨 Imprimir / PDF</button>
+      <button class="btn btn-outline" onclick="abrirSelectorCarpetaFicha(${f.id})">📁 Mover a carpeta</button>
       <button class="btn btn-ghost" onclick="editFicha(${f.id})">✏ Editar</button>
       <button class="btn btn-red" onclick="cfConfirm('¿Eliminar esta ficha?',()=>{delFicha(${f.id});showSec('fichas');})">🗑 Eliminar</button>
     </div>`;
@@ -1322,6 +1516,7 @@ function editFicha(id){
   document.getElementById('p-nombre').value=f.nombre;
   document.getElementById('p-raciones').value=f.rac;
   document.getElementById('p-cat').value=f.cat;
+  renderCarpetasSelectField(f.carpeta&&f.carpeta!=='Sin carpeta'?f.carpeta:'');
   document.getElementById('p-fecha').value=f.fecha||'';
   document.getElementById('p-elab').value=f.elab||'';
   document.getElementById('p-alerg').value=f.alerg||'';
@@ -1333,6 +1528,53 @@ function editFicha(id){
     if(document.getElementById('rc-'+r.id))document.getElementById('rc-'+r.id).value=r.cant||'';
     if(document.getElementById('rcr-'+r.id))document.getElementById('rcr-'+r.id).value=(r.cReal||0).toFixed(4);
   });recalc();
+}
+function abrirSelectorCarpetaFicha(id){
+  const f=app.fichas.find(x=>x.id===id);if(!f)return;
+  const d=document.createElement('div');
+  d.id='modal-mover-carpeta';
+  d.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:3000;display:flex;align-items:center;justify-content:center;padding:1rem;';
+  const carpetas=getCarpetas();
+  d.innerHTML=`<div style="background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:1.5rem;max-width:320px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.5);">
+    <div style="font-size:0.95rem;font-weight:700;color:var(--white);margin-bottom:0.3rem;">📁 Mover a carpeta</div>
+    <div style="font-size:0.78rem;color:var(--ink3);margin-bottom:1rem;">${esc(f.nombre)}</div>
+    <select id="mc-select" style="width:100%;background:var(--bg2);border:1px solid var(--border2);color:var(--ink);border-radius:8px;padding:0.55rem 0.7rem;font-size:0.85rem;margin-bottom:1.25rem;">
+      <option value="">Sin carpeta</option>
+      ${carpetas.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}
+      <option value="__nueva__">＋ Crear nueva carpeta...</option>
+    </select>
+    <div style="display:flex;gap:0.75rem;justify-content:flex-end;">
+      <button id="mc-cancel" style="background:none;border:1px solid var(--brd);color:var(--ink2);border-radius:8px;padding:7px 16px;cursor:pointer;font-size:0.85rem;">Cancelar</button>
+      <button id="mc-ok" style="background:var(--blue);color:#fff;border:none;border-radius:8px;padding:7px 16px;cursor:pointer;font-size:0.85rem;font-weight:600;">Guardar</button>
+    </div>
+  </div>`;
+  document.body.appendChild(d);
+  const sel=document.getElementById('mc-select');
+  const valInicial=(f.carpeta&&f.carpeta!=='Sin carpeta'&&carpetas.includes(f.carpeta))?f.carpeta:'';
+  sel.value=valInicial;
+  sel.dataset.prev=valInicial;
+  sel.onchange=()=>{
+    if(sel.value==='__nueva__'){
+      const prev=sel.dataset.prev||'';
+      crearCarpeta('',(nombre)=>{
+        const nuevasCarpetas=getCarpetas();
+        sel.innerHTML='<option value="">Sin carpeta</option>'+nuevasCarpetas.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')+'<option value="__nueva__">＋ Crear nueva carpeta...</option>';
+        sel.value=nombre;sel.dataset.prev=nombre;
+      },()=>{sel.value=prev;});
+    }else{
+      sel.dataset.prev=sel.value;
+    }
+  };
+  document.getElementById('mc-cancel').onclick=()=>d.remove();
+  document.getElementById('mc-ok').onclick=()=>{
+    const val=sel.value==='__nueva__'?'':sel.value;
+    f.carpeta=val||'Sin carpeta';
+    save();
+    d.remove();
+    toast('✅ Movida a "'+f.carpeta+'"');
+    if(document.getElementById('sec-fichas')?.classList.contains('active'))renderFichas();
+    if(app._verFichaId===id&&document.getElementById('sec-ver')?.classList.contains('active'))verFicha(id);
+  };
 }
 function cfConfirm(msg,onYes){
   const d=document.createElement('div');
@@ -1346,6 +1588,24 @@ function cfConfirm(msg,onYes){
   document.body.appendChild(d);
   document.getElementById('cfcbtn').onclick=function(){d.remove();onYes();};
 }
+function cfPrompt(msg,valorInicial,onOk,onCancel){
+  const d=document.createElement('div');
+  d.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:3000;display:flex;align-items:center;justify-content:center;padding:1rem;';
+  d.innerHTML='<div style="background:var(--card);border:1px solid var(--brd);border-radius:14px;padding:1.5rem;max-width:340px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.5);">'
+    +'<div style="font-size:0.9rem;color:var(--ink1);margin-bottom:0.9rem;">'+msg+'</div>'
+    +'<input type="text" id="cfp-input" value="'+esc(valorInicial||'')+'" style="width:100%;background:var(--bg2);border:1px solid var(--border2);color:var(--ink);border-radius:8px;padding:0.55rem 0.7rem;font-size:0.85rem;margin-bottom:1.25rem;">'
+    +'<div style="display:flex;gap:0.75rem;justify-content:flex-end;">'
+    +'<button id="cfpcancel" style="background:none;border:1px solid var(--brd);color:var(--ink2);border-radius:8px;padding:7px 16px;cursor:pointer;font-size:0.85rem;">Cancelar</button>'
+    +'<button id="cfpok" style="background:var(--blue);color:#fff;border:none;border-radius:8px;padding:7px 16px;cursor:pointer;font-size:0.85rem;font-weight:600;">Crear</button>'
+    +'</div></div>';
+  document.body.appendChild(d);
+  const input=document.getElementById('cfp-input');
+  input.focus();input.select();
+  const cerrar=(cancelado)=>{d.remove();if(cancelado){if(onCancel)onCancel();}};
+  document.getElementById('cfpok').onclick=()=>{const v=input.value;d.remove();onOk(v);};
+  document.getElementById('cfpcancel').onclick=()=>cerrar(true);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'){const v=input.value;d.remove();onOk(v);}else if(e.key==='Escape'){cerrar(true);}});
+}
 function delFicha(id){cfConfirm('¿Eliminar esta ficha?',()=>{app.fichas=app.fichas.filter(f=>f.id!==id);save();toast('🗑 Eliminada');renderFichas();});}
 // ── MENÚ ENGINEERING ──
 let meSelIds=[]; // ids seleccionados
@@ -1357,18 +1617,31 @@ function renderME(){
 }
 
 // Abre el modal selector
+let carpetaActivaMe='todas';
 function openMeSelector(){
   if(!app.fichas.length){toast('⚠ Crea fichas primero');return;}
   document.getElementById('me-sel-search').value='';
+  carpetaActivaMe='todas';
   document.getElementById('modal-me-sel').style.display='flex';
   renderMeSelector();
 }
 function closeMeSelector(){document.getElementById('modal-me-sel').style.display='none';}
+function setCarpetaMe(c){carpetaActivaMe=c;renderMeSelector();}
+function renderCarpetasTabsMe(){
+  const wrap=document.getElementById('me-sel-carpetas');
+  if(!wrap)return;
+  const carpetas=getCarpetas();
+  if(!carpetas.length){wrap.innerHTML='';return;}
+  const tabs=['todas',...carpetas];
+  wrap.innerHTML=tabs.map(c=>`<button class="bf-tab${carpetaActivaMe===c?' active':''}" onclick="setCarpetaMe('${esc(c).replace(/'/g,"\\'")}')">${c==='todas'?'📂 Todas':'📁 '+c}</button>`).join('');
+}
 
 // Renderiza el grid de tarjetas dentro del modal
 function renderMeSelector(){
+  renderCarpetasTabsMe();
   const q=(document.getElementById('me-sel-search')?.value||'').toLowerCase();
-  const list=app.fichas.filter(f=>f.nombre.toLowerCase().includes(q));
+  let list=app.fichas.filter(f=>f.nombre.toLowerCase().includes(q));
+  if(carpetaActivaMe!=='todas')list=list.filter(f=>(f.carpeta||'Sin carpeta')===carpetaActivaMe);
   const grid=document.getElementById('me-sel-grid');
   if(!list.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📋</div><p>Sin fichas que coincidan</p></div>';updMeSelBadge();return;}
   grid.innerHTML=list.map(f=>{
@@ -2138,6 +2411,455 @@ body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#1a1a2e;-webki
   document.getElementById('btn-close-modal').onclick=()=>modal.remove();
 }
 
+// ══ PLANIFICADOR DE BUFFET ══════════════════════════════════════
+const BF_SERVICIOS=[{k:'desayuno',l:'🥐 Desayuno'},{k:'comida',l:'🍽 Comida'},{k:'cena',l:'🌙 Cena'}];
+function bfDefault(){return{colTitulos:[],presupuesto:5,platosMedia:4,margen:25,pax:100,filas:3,columnas:4,grid:[],bebidas:[]};}
+if(!app.buffet){app.buffet={desayuno:bfDefault(),comida:bfDefault(),cena:bfDefault()};}
+BF_SERVICIOS.forEach(s=>{if(!app.buffet[s.k])app.buffet[s.k]=bfDefault();else{if(!app.buffet[s.k].colTitulos)app.buffet[s.k].colTitulos=[];if(!app.buffet[s.k].bebidas)app.buffet[s.k].bebidas=[];}});
+let bfServicioActivo='comida';
+
+function initBuffet(){
+  renderBuffetTabs();
+  renderBuffetConfig();
+  renderBuffetGrid();
+  calcBuffet();
+  renderBebidas();
+}
+
+function renderBuffetTabs(){
+  const wrap=document.getElementById('bf-tabs');
+  wrap.innerHTML=BF_SERVICIOS.map(s=>`<button class="bf-tab${s.k===bfServicioActivo?' active':''}" onclick="switchBuffetServicio('${s.k}')">${s.l}</button>`).join('');
+}
+
+function switchBuffetServicio(k){
+  bfServicioActivo=k;
+  renderBuffetTabs();
+  renderBuffetConfig();
+  renderBuffetGrid();
+  calcBuffet();
+  renderBebidas();
+}
+
+function renderBuffetConfig(){
+  const c=app.buffet[bfServicioActivo];
+  document.getElementById('bf-presupuesto').value=c.presupuesto;
+  document.getElementById('bf-platos-media').value=c.platosMedia;
+  document.getElementById('bf-margen').value=c.margen;
+  document.getElementById('bf-pax').value=c.pax;
+  document.getElementById('bf-filas').value=c.filas;
+  document.getElementById('bf-columnas').value=c.columnas;
+}
+
+function onBfColTituloChange(col,val){
+  const c=app.buffet[bfServicioActivo];
+  c.colTitulos[col]=val;
+  save();
+}
+
+function guardarBuffetConfig(){
+  const c=app.buffet[bfServicioActivo];
+  c.presupuesto=parseFloat(document.getElementById('bf-presupuesto').value)||0;
+  c.platosMedia=parseFloat(document.getElementById('bf-platos-media').value)||1;
+  c.margen=parseFloat(document.getElementById('bf-margen').value)||0;
+  c.pax=parseInt(document.getElementById('bf-pax').value)||0;
+  save();
+  calcBuffet();
+  renderBebidas();
+  toast('✅ Configuración de '+bfServicioActivo+' guardada');
+}
+
+function generarGridBuffet(){
+  const c=app.buffet[bfServicioActivo];
+  const filas=Math.max(1,Math.min(12,parseInt(document.getElementById('bf-filas').value)||1));
+  const columnas=Math.max(1,Math.min(12,parseInt(document.getElementById('bf-columnas').value)||1));
+  const nuevaGrid=[];
+  for(let r=0;r<filas;r++){
+    const fila=[];
+    for(let col=0;col<columnas;col++){
+      fila.push((c.grid[r]&&c.grid[r][col])?c.grid[r][col]:'');
+    }
+    nuevaGrid.push(fila);
+  }
+  const nuevosTitulos=[];
+  for(let col=0;col<columnas;col++){
+    nuevosTitulos.push(c.colTitulos&&c.colTitulos[col]?c.colTitulos[col]:'');
+  }
+  c.filas=filas;c.columnas=columnas;c.grid=nuevaGrid;c.colTitulos=nuevosTitulos;
+  save();
+  renderBuffetGrid();
+  calcBuffet();
+}
+
+function renderBuffetGrid(){
+  const c=app.buffet[bfServicioActivo];
+  const tbl=document.getElementById('bf-grid-tbl');
+  if(!c.grid.length){generarGridBuffet();return;}
+  if(!c.colTitulos||c.colTitulos.length!==c.columnas){
+    c.colTitulos=Array.from({length:c.columnas},(_,i)=>(c.colTitulos&&c.colTitulos[i])||'');
+  }
+  let html='<thead><tr>';
+  for(let col=0;col<c.columnas;col++){
+    html+=`<td><input type="text" class="bf-col-title" placeholder="Ej: Lunes" value="${esc(c.colTitulos[col]||'')}" oninput="onBfColTituloChange(${col},this.value)"></td>`;
+  }
+  html+='</tr></thead><tbody>';
+  for(let r=0;r<c.filas;r++){
+    html+='<tr>';
+    for(let col=0;col<c.columnas;col++){
+      const val=c.grid[r][col]||'';
+      const f=app.fichas.find(x=>String(x.id)===String(val));
+      html+=`<td>
+        <div class="bf-cell" onclick="openBfSelector(${r},${col})">
+          ${f?`<button class="bf-cell-remove" onclick="event.stopPropagation();clearBfCell(${r},${col})" title="Quitar ficha">✕</button>
+          <div class="bf-cell-top">
+            <h4>${f.nombre}</h4>
+            <p>${f.cat} · ${f.rac} raciones · ${f.fecha||'—'}</p>
+          </div>
+          <div class="bf-cell-body">
+            <div class="bf-cell-prices">
+              <div class="bf-cp"><div class="l">CMP/rac</div><div class="v">${fmt(f.cmpR)}</div></div>
+              <div class="bf-cp"><div class="l">PV/rac</div><div class="v">${fmt(f.pvR)}</div></div>
+            </div>
+          </div>`
+          :`<div class="bf-cell-empty"><span>➕</span>Elegir ficha</div>`}
+        </div>
+      </td>`;
+    }
+    html+='</tr>';
+  }
+  html+='</tbody>';
+  tbl.innerHTML=html;
+}
+
+let bfCellActivo=null;
+let carpetaActivaBf='todas';
+function openBfSelector(r,col){
+  if(!app.fichas.length){toast('⚠ Crea fichas primero');return;}
+  bfCellActivo={r,col};
+  document.getElementById('bf-sel-search').value='';
+  carpetaActivaBf='todas';
+  document.getElementById('modal-bf-sel').style.display='flex';
+  renderBfSelector();
+}
+function closeBfSelector(){
+  document.getElementById('modal-bf-sel').style.display='none';
+  bfCellActivo=null;
+}
+function setCarpetaBf(c){carpetaActivaBf=c;renderBfSelector();}
+function renderCarpetasTabsBf(){
+  const wrap=document.getElementById('bf-sel-carpetas');
+  if(!wrap)return;
+  const carpetas=getCarpetas();
+  if(!carpetas.length){wrap.innerHTML='';return;}
+  const tabs=['todas',...carpetas];
+  wrap.innerHTML=tabs.map(c=>`<button class="bf-tab${carpetaActivaBf===c?' active':''}" onclick="setCarpetaBf('${esc(c).replace(/'/g,"\\'")}')">${c==='todas'?'📂 Todas':'📁 '+c}</button>`).join('');
+}
+function renderBfSelector(){
+  renderCarpetasTabsBf();
+  const q=(document.getElementById('bf-sel-search')?.value||'').toLowerCase();
+  let list=app.fichas.filter(f=>f.nombre.toLowerCase().includes(q));
+  if(carpetaActivaBf!=='todas')list=list.filter(f=>(f.carpeta||'Sin carpeta')===carpetaActivaBf);
+  const grid=document.getElementById('bf-sel-grid');
+  if(!list.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📋</div><p>Sin fichas que coincidan</p></div>';return;}
+  const c=app.buffet[bfServicioActivo];
+  const actual=bfCellActivo?(c.grid[bfCellActivo.r][bfCellActivo.col]||''):'';
+  grid.innerHTML=list.map(f=>{
+    const sel=String(f.id)===String(actual);
+    return`<div class="me-sel-card${sel?' selected':''}" onclick="pickBfFicha(${f.id})">
+      <div class="msc-check">${sel?'✓':''}</div>
+      <div class="msc-top">
+        <div class="msc-nombre">${f.nombre}</div>
+        <div class="msc-cat">${f.cat} · ${f.rac} raciones · ${f.fecha||'—'}</div>
+      </div>
+      <div class="msc-body">
+        <div class="msc-row"><span class="msc-lbl">CMP/rac</span><span class="msc-val">${fmt(f.cmpR)}</span></div>
+        <div class="msc-row"><span class="msc-lbl">PV/rac</span><span class="msc-val blue">${fmt(f.pvR)}</span></div>
+        <div class="msc-divider"></div>
+        <div class="msc-row"><span class="msc-lbl">PVP IVA</span><span class="msc-val blue">${fmt(f.pvIva)}</span></div>
+        <div class="msc-row"><span class="msc-lbl">Margen</span><span class="msc-val green">${fmt(f.mb)}</span></div>
+        ${f.alerg?`<div style="font-size:0.62rem;color:var(--ink3);margin-top:0.35rem;">⚠ ${f.alerg}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function pickBfFicha(id){
+  if(!bfCellActivo)return;
+  const c=app.buffet[bfServicioActivo];
+  c.grid[bfCellActivo.r][bfCellActivo.col]=String(id);
+  save();
+  closeBfSelector();
+  renderBuffetGrid();
+  calcBuffet();
+}
+function clearBfCell(r,col){
+  const c=app.buffet[bfServicioActivo];
+  c.grid[r][col]='';
+  save();
+  renderBuffetGrid();
+  calcBuffet();
+}
+
+// ══ BEBIDAS (aparte del buffet, para eventos) ══
+function addBebida(){
+  const c=app.buffet[bfServicioActivo];
+  if(!c.bebidas)c.bebidas=[];
+  c.bebidas.push({nombre:'',precioBotella:0,personasPorBotella:4});
+  save();
+  renderBebidas();
+}
+function removeBebida(idx){
+  const c=app.buffet[bfServicioActivo];
+  c.bebidas.splice(idx,1);
+  save();
+  renderBebidas();
+}
+function onBebidaChange(idx,campo,val){
+  const c=app.buffet[bfServicioActivo];
+  const b=c.bebidas[idx];
+  if(!b)return;
+  if(campo==='nombre')b.nombre=val;
+  else if(campo==='precioBotella')b.precioBotella=parseFloat(val)||0;
+  else if(campo==='personasPorBotella')b.personasPorBotella=parseFloat(val)||4;
+  save();
+  renderBebidasResultado();
+}
+function renderBebidas(){
+  const c=app.buffet[bfServicioActivo];
+  if(!c.bebidas)c.bebidas=[];
+  const tbl=document.getElementById('bf-bebidas-tbl');
+  if(!c.bebidas.length){
+    tbl.innerHTML='<tr><td style="padding:0.8rem 0;color:var(--ink3);font-size:0.8rem;">Sin bebidas añadidas todavía.</td></tr>';
+  }else{
+    let html='<thead><tr><th>Bebida</th><th>Precio/botella (€)</th><th>Personas/botella</th><th>Botellas necesarias</th><th>Coste total</th><th></th></tr></thead><tbody>';
+    c.bebidas.forEach((b,idx)=>{
+      const pax=parseInt(document.getElementById('bf-pax')?.value)||c.pax||0;
+      const personas=b.personasPorBotella||4;
+      const botellas=pax>0?Math.ceil(pax/personas):0;
+      const costeItem=botellas*(b.precioBotella||0);
+      html+=`<tr>
+        <td><input class="bf-bev-input" type="text" placeholder="Ej: Vino tinto" value="${esc(b.nombre)}" oninput="onBebidaChange(${idx},'nombre',this.value)"></td>
+        <td><input class="bf-bev-input" type="number" step="0.01" min="0" value="${b.precioBotella}" oninput="onBebidaChange(${idx},'precioBotella',this.value)"></td>
+        <td><input class="bf-bev-input" type="number" step="1" min="1" value="${personas}" oninput="onBebidaChange(${idx},'personasPorBotella',this.value)"></td>
+        <td style="text-align:center;font-weight:700;">${botellas}</td>
+        <td style="text-align:center;font-weight:700;">${fmt(costeItem)}</td>
+        <td><button class="bf-bev-del" onclick="removeBebida(${idx})">✕</button></td>
+      </tr>`;
+    });
+    html+='</tbody>';
+    tbl.innerHTML=html;
+  }
+  renderBebidasResultado();
+}
+function renderBebidasResultado(){
+  const c=app.buffet[bfServicioActivo];
+  const pax=parseInt(document.getElementById('bf-pax')?.value)||c.pax||0;
+  let totalBotellas=0,totalCoste=0;
+  (c.bebidas||[]).forEach(b=>{
+    const personas=b.personasPorBotella||4;
+    const botellas=pax>0?Math.ceil(pax/personas):0;
+    totalBotellas+=botellas;
+    totalCoste+=botellas*(b.precioBotella||0);
+  });
+  const costePorPersonaBebida=pax>0?totalCoste/pax:0;
+  document.getElementById('bf-bebidas-resultado').innerHTML=`
+    <div class="res-box rb-n"><div class="rl">Nº bebidas distintas</div><div class="rv">${(c.bebidas||[]).length}</div></div>
+    <div class="res-box rb-n"><div class="rl">Total botellas (${pax} pax)</div><div class="rv">${totalBotellas}</div></div>
+    <div class="res-box rb-n"><div class="rl">Coste bebida / persona</div><div class="rv">${fmt(costePorPersonaBebida)}</div></div>
+    <div class="res-box rb-b"><div class="rl">Coste total bebidas</div><div class="rv">${fmt(totalCoste)}</div></div>`;
+}
+
+function calcBuffet(){
+  const c=app.buffet[bfServicioActivo];
+  if(!c||!c.grid.length){return;}
+  const presupuesto=parseFloat(document.getElementById('bf-presupuesto')?.value)||c.presupuesto||0;
+  const platosMedia=parseFloat(document.getElementById('bf-platos-media')?.value)||c.platosMedia||1;
+  const margen=parseFloat(document.getElementById('bf-margen')?.value)||0;
+  const pax=parseInt(document.getElementById('bf-pax')?.value)||0;
+
+  let platosColocados=0,costeTotalUnidades=0;
+  c.grid.forEach(fila=>fila.forEach(id=>{
+    if(!id)return;
+    const f=app.fichas.find(x=>String(x.id)===String(id));
+    if(f){platosColocados++;costeTotalUnidades+=f.cmpR;}
+  }));
+
+  const presupuestoAjustado=presupuesto*(1-margen/100);
+  const costeMedioCliente=costeTotalUnidades/platosMedia;
+  const encaja=costeMedioCliente<=presupuestoAjustado;
+  const costeTotalDiario=costeMedioCliente*pax;
+  const diferencia=presupuestoAjustado-costeMedioCliente;
+
+  document.getElementById('buffet-resultado').innerHTML=`
+    <div class="res-box rb-n"><div class="rl">Platos colocados</div><div class="rv">${platosColocados}</div></div>
+    <div class="res-box rb-n"><div class="rl">Coste total (1 unidad c/u)</div><div class="rv">${fmt(costeTotalUnidades)}</div></div>
+    <div class="res-box rb-b"><div class="rl">Presupuesto ajustado (−${margen}%)</div><div class="rv">${fmt(presupuestoAjustado)}</div></div>
+    <div class="res-box ${encaja?'rb-g':'rb-a'}"><div class="rl">Coste medio / cliente</div><div class="rv">${fmt(costeMedioCliente)}</div></div>
+    <div class="res-box rb-n"><div class="rl">Diferencia vs presupuesto</div><div class="rv" style="color:${diferencia>=0?'#81C784':'#EF9A9A'}">${diferencia>=0?'+':''}${fmt(diferencia)}</div></div>
+    <div class="res-box rb-n"><div class="rl">Coste total diario (${pax} pax)</div><div class="rv">${fmt(costeTotalDiario)}</div></div>
+    <div style="grid-column:1/-1;text-align:center;margin-top:0.4rem;">
+      <span class="bf-semaforo ${encaja?'bf-sem-ok':'bf-sem-bad'}">${encaja?'✅ Encaja en presupuesto':'⚠ Se pasa del presupuesto'}</span>
+    </div>`;
+}
+
+function exportarBuffetPDF(){
+  const c=app.buffet[bfServicioActivo];
+  if(!c||!c.grid.length){toast('⚠ Genera primero la cuadrícula');return;}
+  const servicioLbl=(BF_SERVICIOS.find(s=>s.k===bfServicioActivo)||{}).l||bfServicioActivo;
+  const presupuesto=c.presupuesto,platosMedia=c.platosMedia,margen=c.margen,pax=c.pax;
+  const presupuestoAjustado=presupuesto*(1-margen/100);
+  const fecha=new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'long',year:'numeric'});
+
+  // Datos por columna (día)
+  let platosColocadosTotal=0,costeTotalGeneral=0;
+  const columnas=[];
+  for(let col=0;col<c.columnas;col++){
+    const nombreCol=(c.colTitulos&&c.colTitulos[col])?c.colTitulos[col]:'Columna '+(col+1);
+    const platosCol=[];
+    let costeCol=0;
+    for(let r=0;r<c.filas;r++){
+      const id=c.grid[r][col];
+      const f=id?app.fichas.find(x=>String(x.id)===String(id)):null;
+      platosCol.push(f||null);
+      if(f){costeCol+=f.cmpR;platosColocadosTotal++;costeTotalGeneral+=f.cmpR;}
+    }
+    const costeMedioCol=costeCol/(platosMedia||1);
+    const encajaCol=costeMedioCol<=presupuestoAjustado;
+    const diferenciaCol=presupuestoAjustado-costeMedioCol;
+    const costeTotalDiarioCol=costeMedioCol*pax;
+    columnas.push({nombreCol,platosCol,costeCol,costeMedioCol,encajaCol,diferenciaCol,costeTotalDiarioCol,nPlatos:platosCol.filter(Boolean).length});
+  }
+
+  // Tabla visual: filas = casillas de la cuadrícula, columnas = días
+  const cabeceraHtml=columnas.map(col=>`<th style="text-align:center;">${col.nombreCol}</th>`).join('');
+  let filasHtml='';
+  for(let r=0;r<c.filas;r++){
+    filasHtml+='<tr>';
+    for(let col=0;col<c.columnas;col++){
+      const f=columnas[col].platosCol[r];
+      filasHtml+=`<td style="text-align:center;padding:6px 6px;border-bottom:1px solid #e3f2fd;border-right:1px solid #f0f4f8;">${f?`<div style="font-weight:600;">${f.nombre}</div><div style="font-size:7pt;color:#78909c;margin-top:2px;">${fmt(f.cmpR)}</div>`:'<span style="color:#cfd8dc;">—</span>'}</td>`;
+    }
+    filasHtml+='</tr>';
+  }
+
+  // Cálculos independientes por columna
+  const resColHtml=columnas.map(col=>`
+    <div style="border:1.5px solid ${col.encajaCol?'#c8e6c9':'#ffcdd2'};background:${col.encajaCol?'#f1f8f2':'#fdf1f1'};border-radius:10px;padding:12px 14px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:10.5pt;font-weight:700;color:#0d1b2a;">${col.nombreCol}</div>
+        <div style="font-size:8pt;font-weight:700;padding:3px 10px;border-radius:12px;background:${col.encajaCol?'#c8e6c9':'#ffcdd2'};color:${col.encajaCol?'#2e7d32':'#c62828'};">${col.encajaCol?'✅ Encaja':'⚠ Se pasa'}</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:8pt;">
+        <div style="flex:1;min-width:90px;"><div style="color:#78909c;font-size:6.5pt;text-transform:uppercase;letter-spacing:.05em;">Platos</div><div style="font-weight:700;">${col.nPlatos}</div></div>
+        <div style="flex:1;min-width:90px;"><div style="color:#78909c;font-size:6.5pt;text-transform:uppercase;letter-spacing:.05em;">Coste total unid.</div><div style="font-weight:700;">${fmt(col.costeCol)}</div></div>
+        <div style="flex:1;min-width:90px;"><div style="color:#78909c;font-size:6.5pt;text-transform:uppercase;letter-spacing:.05em;">Coste medio/cliente</div><div style="font-weight:700;color:${col.encajaCol?'#2e7d32':'#c62828'};">${fmt(col.costeMedioCol)}</div></div>
+        <div style="flex:1;min-width:90px;"><div style="color:#78909c;font-size:6.5pt;text-transform:uppercase;letter-spacing:.05em;">Diferencia</div><div style="font-weight:700;color:${col.diferenciaCol>=0?'#2e7d32':'#c62828'};">${col.diferenciaCol>=0?'+':''}${fmt(col.diferenciaCol)}</div></div>
+        <div style="flex:1;min-width:90px;"><div style="color:#78909c;font-size:6.5pt;text-transform:uppercase;letter-spacing:.05em;">Total diario (${pax}pax)</div><div style="font-weight:700;">${fmt(col.costeTotalDiarioCol)}</div></div>
+      </div>
+    </div>`).join('');
+
+  // Total comida (suma de todas las columnas)
+  const totalComidaDiario=columnas.reduce((s,col)=>s+col.costeTotalDiarioCol,0);
+
+  // Bebidas (aparte, evento)
+  const bebidas=c.bebidas||[];
+  let totalBebidas=0,totalBotellas=0;
+  const bebidasFilas=bebidas.map(b=>{
+    const personas=b.personasPorBotella||4;
+    const botellas=pax>0?Math.ceil(pax/personas):0;
+    const costeItem=botellas*(b.precioBotella||0);
+    totalBebidas+=costeItem;
+    totalBotellas+=botellas;
+    return`<tr><td style="padding:5px 8px;border-bottom:1px solid #e3f2fd;font-weight:600;">${b.nombre||'(sin nombre)'}</td><td style="padding:5px 8px;border-bottom:1px solid #e3f2fd;text-align:center;">1 cada ${personas}p</td><td style="padding:5px 8px;border-bottom:1px solid #e3f2fd;text-align:center;">${botellas}</td><td style="padding:5px 8px;border-bottom:1px solid #e3f2fd;text-align:right;">${fmt(costeItem)}</td></tr>`;
+  }).join('');
+  const bebidasHtml=bebidas.length?`
+    <div class="sec-ttl">Bebidas (aparte del buffet)</div>
+    <table>
+      <thead><tr><th>Bebida</th><th style="text-align:center">Ratio</th><th style="text-align:center">Botellas</th><th style="text-align:right">Coste</th></tr></thead>
+      <tbody>${bebidasFilas}</tbody>
+    </table>`:'';
+
+  const totalEvento=totalComidaDiario+totalBebidas;
+
+  const html=`<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><title>CostFlow — Buffet ${servicioLbl}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#1a1a2e;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@page{size:A4 portrait;margin:0}
+.banner{background:#1565c0;color:#fff;padding:10px 20px;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.banner button{background:#fff;color:#1565c0;border:none;border-radius:6px;padding:7px 18px;font-size:13px;font-weight:700;cursor:pointer;}
+@media print{.banner{display:none}}
+.page{width:210mm;margin:0 auto;min-height:297mm;position:relative;background:#fff}
+.cab{background:#0d1b2a;padding:28px 30px 22px;position:relative}
+.cab-top{height:3px;background:linear-gradient(90deg,#1976d2,#42a5f5,transparent);position:absolute;top:0;left:0;right:0}
+.body{padding:22px 30px 60px}
+.sec-ttl{font-size:7pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1565c0;margin-bottom:8px;border-bottom:1.5px solid #bbdefb;padding-bottom:3px;margin-top:18px}
+table{width:100%;border-collapse:collapse;font-size:8.5pt;}
+thead tr{background:#e3f2fd}
+th{padding:6px 8px;text-align:left;font-size:7pt;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#1565c0;border-right:1px solid #fff;}
+footer{position:absolute;bottom:0;left:0;right:0;background:#f8fbff;border-top:1px solid #e3f2fd;padding:7px 30px;display:flex;justify-content:space-between;font-size:7.5pt;color:#90a4ae}
+</style>
+</head><body>
+<div class="banner">
+  <span>🍽 <b>CostFlow — Planificador de Buffet</b> &nbsp;·&nbsp; Para guardar como PDF selecciona <b>"Guardar como PDF"</b> como impresora</span>
+  <button onclick="window.print()">🖨 Imprimir / Guardar PDF</button>
+</div>
+<div class="page">
+  <div class="cab">
+    <div class="cab-top"></div>
+    <div style="font-size:8pt;font-weight:700;letter-spacing:.18em;color:#42a5f5;text-transform:uppercase;margin-bottom:8px;">CostFlow · Planificador de Buffet</div>
+    <div style="font-size:22pt;font-weight:700;color:#fff;margin-bottom:6px;">${servicioLbl}</div>
+    <div style="font-size:9pt;color:rgba(255,255,255,.5);">${platosColocadosTotal} platos · ${fecha}</div>
+  </div>
+  <div class="body">
+    <div class="sec-ttl">Cuadrícula de platos por día</div>
+    <table>
+      <thead><tr>${cabeceraHtml}</tr></thead>
+      <tbody>${filasHtml}</tbody>
+    </table>
+    <div class="sec-ttl">Cálculo independiente por columna</div>
+    ${resColHtml}
+    ${bebidasHtml}
+    <div style="margin-top:20px;background:#0d1b2a;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div style="font-size:7pt;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:3px;">Total aproximado del evento (comida + bebida)</div>
+        <div style="font-size:8pt;color:rgba(255,255,255,.45);">Comida: ${fmt(totalComidaDiario)} &nbsp;+&nbsp; Bebida: ${fmt(totalBebidas)} (${totalBotellas} botellas)</div>
+      </div>
+      <div style="font-size:18pt;font-weight:700;color:#fff;">${fmt(totalEvento)}</div>
+    </div>
+  </div>
+  <footer>
+    <span>CostFlow · Planificador de Buffet</span>
+    <span>${fecha}</span>
+    <span>costflow.app</span>
+  </footer>
+</div>
+</body></html>`;
+
+  const isLimitedWV=(()=>{const ua=navigator.userAgent||'';return /WhatsApp|Instagram|FBAN|FBAV|MicroMessenger|webview/i.test(ua)||(window.location.protocol==='content:')||(typeof window.print!=='function');})();
+  const prev=document.getElementById('modal-print-bf');
+  if(prev)prev.remove();
+  if(isLimitedWV){
+    try{const blob=new Blob([html],{type:'text/html'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.target='_blank';a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);toast('📄 Abriendo en navegador externo...');}catch(e){toast('⚠ Abre el archivo en Chrome para imprimir');}
+    return;
+  }
+  const modal=document.createElement('div');
+  modal.id='modal-print-bf';
+  modal.style.cssText='position:fixed;inset:0;z-index:2000;background:#0d1b2a;display:flex;flex-direction:column;';
+  const bar=document.createElement('div');
+  bar.style.cssText='background:#1565c0;color:#fff;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;flex-wrap:wrap;';
+  bar.innerHTML='<span style="font-size:13px;font-weight:600;">🖨 Usa el menú del navegador para imprimir o guardar como PDF</span><div style="display:flex;gap:8px;"><button id="btn-print-bf" style="background:#fff;color:#1565c0;border:none;border-radius:6px;padding:7px 16px;font-size:13px;font-weight:700;cursor:pointer;">🖨 Imprimir / PDF</button><button id="btn-close-bf" style="background:rgba(255,255,255,0.2);color:#fff;border:none;border-radius:6px;padding:7px 12px;font-size:13px;cursor:pointer;">✕ Cerrar</button></div>';
+  const iframe=document.createElement('iframe');
+  iframe.style.cssText='flex:1;border:none;width:100%;';
+  modal.appendChild(bar);
+  modal.appendChild(iframe);
+  document.body.appendChild(modal);
+  requestAnimationFrame(()=>{
+    try{iframe.contentDocument.open();iframe.contentDocument.write(html);iframe.contentDocument.close();}
+    catch(e){const blob=new Blob([html],{type:'text/html'});iframe.src=URL.createObjectURL(blob);}
+  });
+  document.getElementById('btn-print-bf').onclick=()=>{try{iframe.contentWindow.print();}catch(e){window.print();}};
+  document.getElementById('btn-close-bf').onclick=()=>modal.remove();
+}
 
 </script>
 </body>
